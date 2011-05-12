@@ -281,6 +281,7 @@ function comicSet(data){
 /* */
 };
 /* */
+
 LS.comic.prototype.createBox = function(parentObj){
            var divEntry = $("<div/>", {id:this.id,class:"c-entry",click:this.loadEps}),
                    imgC = $("<img/>", {src:this.coverImg,class:"thumbS"}),
