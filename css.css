@@ -1,0 +1,49 @@
+﻿body,p{font-size:13px;}
+.stdButt{text-align:center;padding:8px 19px;background:#666;;box-shadow:0 0 5px #777;border-radius: 5px;margin:4px 12px;}
+.c-entry{float:left;
+margin: 0 10px 10px 0;
+background: #c9c9c9;
+/*box-shadow: 0 0 8px #777;*/
+}
+.c-thumbS{
+overflow:hidden;
+height:170px;
+}
+.c-title{font:20px bold;padding:2px 4px;color:#fff;}
+.c-eps{width:165px;display:-webkit-box;position:absolute;}
+.eps{padding:4px 6px;color:#fff;background:#3D82C4;font-family: Arial;
+font-size: 16px;
+font-weight: bold;}
+.c-flex{-webkit-box-flex:1;}
+.thumbS{height:220px;width:165px;}
+.c-info{background:#4CB749;width:165px;height:50px;}
+.c_right_comic li{
+width: 170px;
+float: left;
+list-style: none;
+text-align: center;
+height: 30px;
+background: #C9C9C9;
+margin: 5px;
+border-radius: 5px;
+}
+.c_right_comic{width:430px;float:left;margin:0 0 0 25px;}
+.c_right_comic li a{padding: 7px;display: block;}
+.c_right_img{width:150px;float:left;}
+#book_03{clear:both;}
+
+#hold{overflow:hidden;padding:8px 19px;background:#eee;;box-shadow:0 0 5px #777;border-radius: 5px;margin:10px 12px;}
+
+.comicImg{display:block;box-shadow:0 0 10px #222;margin:12px auto;}
+
+.cCun{float:left;width:200px;}
+#column div{}
+#column2 ul{list-style:none;}
+.cVol{overflow: hidden;}
+.cVol ul{list-style:none;margin: 0;padding: 0 0 0 7px;}
+.cVol ul li{margin:4px 6px;float:left;padding:8px 19px;background:#9C0;box-shadow:0 0 8px #777;border-radius: 5px;}
+.cCoo{}
+
+.cHYinYin a{cursor:pointer;padding:4px 8px;margin:5px;border-radius: 5px;background:#9C0;}
+/* Normal Style */
+.normalStyle{overflow:hidden;padding:8px 19px;background:#eee;;box-shadow:0 0 5px #777;border-radius: 5px;margin:10px 12px;}
