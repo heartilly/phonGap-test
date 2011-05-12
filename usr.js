@@ -1,4 +1,5 @@
-﻿var _FECTHING = 5;
+﻿// i edit here
+var _FECTHING = 5;
 // Manga Site
 //var mangaSite = ["http://www.cococomic.com",
 //"http://mh.99770.cc",
