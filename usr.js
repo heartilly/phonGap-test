@@ -18,7 +18,7 @@ var mangaSite = {
    site3:{
        url:"http://www.99comic.com",
        xpath:"//div[@class='cComicList']/ul/li",
-       xpath2:"//div[@class='cPubRight']/div[@class='cAreaTitle' or @class='cCun' or @class='cVol' or @class='cCoo']",
+       xpath2:"//div[@class='cPubRight']/div[@class='cCun' or @class='cVol' or @class='cCoo']",
        del:".cCtt,li p,.cAreaTitle,.cCt p"
        }
    },
@@ -77,8 +77,52 @@ var mangaSite = {
            this.title = e.a[0].title;
            this.coverImg = e.a[0].img.src;
            this.lastestEps = /\d+/ig.exec(e.p).toString();
-       
-   },
+		   this.createBox = function(parentObj){
+			   var divEntry = $("<div/>", {id:this.id,class:"c-entry",click:this.loadEps}).data(this),
+			   imgC = $("<img/>", {src:this.coverImg,class:"thumbS"}),
+			   divEps = $("<div class='c-eps'><div class='c-flex' /></div>").append($("<div class='eps'/>").html(this.lastestEps)),
+			   divImgC = $("<div />",{class:'c-thumbS'}).append(divEps,imgC),
+			   divTitle = $("<div class='c-title' />").append($("<span />",{html :this.title})),
+			   divInfo = $("<div class='c-info' />").append(divTitle);
+			   divEntry.append(divImgC,divInfo);
+			   parentObj.appendChild(divEntry[0]);
+			}
+			this.loadEps = function(){
+			var comic = $(event.currentTarget).data();
+			  // console.log(comic);
+			   console.log(comic.title);
+			   console.log(comic.url);
+			   console.log(comic.id);
+			   LS.requestCrossDomain(comic.fullUrl,LS._TARGETSITE.xpath2, function doResult(results) {
+			   var	cDetail = results.div[0].div[0].div[1].ul.li,
+					cEps = results.div[1].ul.li,
+					cSyno = results.div[2].p;
+				
+				this.bTitle = cDetail[0].p;
+				this.author = cDetail[1].p;
+				this.status = cDetail[5].font.content;
+				this.sysno = cSyno;
+			   console.log(comicSyno);
+			  // console.log(results)
+			   /* * /
+				   var    docFragment = document.createDocumentFragment(),
+						   obj = results.li.reverse(),i = obj.length;
+					   
+				   while(i--) {var comic = new LS.comic(obj[i]);
+								   comic.createBox(docFragment);
+				
+								   }
+					   
+				   console.log("======================================");
+
+			
+				   LS._THUMBC.append(docFragment);
+				   LS._MAINC.append(LS._THUMBC);
+				   LS._BODY.append(LS._MAINC);
+				  /* */
+			   });
+			}
+	},
    // Load first time
    doLastest : function(){
        LS.requestCrossDomain(LS._TARGETSITE.url,LS._TARGETSITE.xpath, function doResult(results) {
@@ -86,7 +130,8 @@ var mangaSite = {
                    obj = results.li.reverse(),i = obj.length;
                
            while(i--) {var comic = new LS.comic(obj[i]);
-                           comic.createBox(docFragment);            
+                           comic.createBox(docFragment);
+						//	console.log($(".c-entry").data("comic"))
                            }
                
            console.log("======================================");
@@ -282,27 +327,6 @@ function comicSet(data){
 };
 /* */
 
-LS.comic.prototype.createBox = function(parentObj){
-           var divEntry = $("<div/>", {id:this.id,class:"c-entry",click:this.loadEps}),
-                   imgC = $("<img/>", {src:this.coverImg,class:"thumbS"}),
-                   divEps = $("<div class='c-eps'><div class='c-flex' /></div>").append($("<div class='eps'/>").html(this.lastestEps)),
-                   divImgC = $("<div />",{class:'c-thumbS'}).append(divEps,imgC),
-                   divTitle = $("<div class='c-title' />").append($("<span />",{html :this.title})),
-                   divInfo = $("<div class='c-info' />").append(divTitle);
-                   divEntry.append(divImgC,divInfo);
-                       $.data(divEntry,this);
-                   parentObj.appendChild(divEntry[0]);    
-               //console.log(this);
-                   
-   }
-   LS.comic.prototype.loadEps = function(){
-   console.log(this);
-   var comic = $(event.currentTarget).data(comic);
-       console.log(comic);
-       console.log(comic.title);
-       console.log(comic.url);
-       console.log(comic.id);
-       }
 /* */
 LS.doConstrucMain();
 //var fav = new Lawnchair('fav');
