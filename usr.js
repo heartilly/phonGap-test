@@ -103,7 +103,7 @@ var mangaSite = {
 				this.author = cDetail[1].p;
 				this.status = cDetail[5].font.content;
 				this.sysno = cSyno;
-			   console.log(comicSyno);
+			   console.log(cSyno);
 			  // console.log(results)
 			   /* * /
 				   var    docFragment = document.createDocumentFragment(),
