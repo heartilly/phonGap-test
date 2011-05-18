@@ -24,7 +24,8 @@ var mangaSite = {
        }
    },
    LS = {
-   _THUMBC : $('<div/>',{class:'bl'}),    
+   _THUMBC : $('<div/>',{class:'bl',id:'thumbC'}),
+   _LISTC : $('<div/>',{class:'bl',id:'listC'}),
    _MAINC : $("<div />",{ id:'main'}),
    _BODY : $("body"),
    _LASTESTCOMIC :[],
@@ -43,7 +44,7 @@ var mangaSite = {
                    "http://220.189.250.101:99/dm11/", //10
                    "http://61.164.109.202:99/dm12/", //11
                    ],
-   requestCrossDomain : function( site,xpath, callback ) {
+   requestCrossDomain : function( site,xpath, callback, obj) {
        // If no url was passed, exit.
        if ( !site ) {
            alert('No site was passed.');
@@ -62,7 +63,7 @@ var mangaSite = {
            // If the user passed a callback, and it
            // is a function, call it, and send through the data var.
            if ( typeof callback === 'function') {
-               callback(data);
+               callback(data,obj);
            }
        }
        // Else, Maybe we requested a site that doesn't exist, and nothing returned.
@@ -90,36 +91,28 @@ var mangaSite = {
 			}
 			this.loadEps = function(){
 			var comic = $(event.currentTarget).data(),
-			   newComic = LS.requestCrossDomain(comic.fullUrl,LS._TARGETSITE.xpath2, function doResult(results) {
+			   newComic = LS.requestCrossDomain(comic.fullUrl,LS._TARGETSITE.xpath2, function doResult(results,comic) {
 			   var	cDetail = results.div[0].div[0].div[1].ul.li,
 					cEps = results.div[1].ul.li,
-					cSyno = results.div[2].p;
+					cSyno = results.div[2].p,
+					newComic = {
+						bTitle : cDetail[0].p,
+						tauthor : cDetail[1].p,
+						status : cDetail[5].font.content,
+						cSyno : cSyno,
+						cEps : cEps
+						}
+					$.extend(comic,newComic);
+						//console.log(comic);
 					
-				this.bTitle = cDetail[0].p;
-				this.tauthor = cDetail[1].p;
-				this.status = cDetail[5].font.content;
-				this.cSyno = cSyno;
-				 this.cEps = cEps;
-				
-
-			  // console.log(results)
-			   /* * /
-				   var    docFragment = document.createDocumentFragment(),
-						   obj = results.li.reverse(),i = obj.length;
-					   
-				   while(i--) {var comic = new LS.comic(obj[i]);
-								   comic.createBox(docFragment);
-				
-								   }
-					   
-				   console.log("======================================");
+					
 
 			
 				   LS._THUMBC.append(docFragment);
 				   LS._MAINC.append(LS._THUMBC);
 				   LS._BODY.append(LS._MAINC);
 				  /* */
-			   });
+			   },comic);
 			console.log("newComic = " + newComic);
 			}
 	},
