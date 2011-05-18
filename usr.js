@@ -89,21 +89,19 @@ var mangaSite = {
 			   parentObj.appendChild(divEntry[0]);
 			}
 			this.loadEps = function(){
-			var comic = $(event.currentTarget).data();
-			  // console.log(comic);
-			   console.log(comic.title);
-			   console.log(comic.url);
-			   console.log(comic.id);
-			   LS.requestCrossDomain(comic.fullUrl,LS._TARGETSITE.xpath2, function doResult(results) {
+			var comic = $(event.currentTarget).data(),
+			   newComic = LS.requestCrossDomain(comic.fullUrl,LS._TARGETSITE.xpath2, function doResult(results) {
 			   var	cDetail = results.div[0].div[0].div[1].ul.li,
 					cEps = results.div[1].ul.li,
 					cSyno = results.div[2].p;
-				
+					
 				this.bTitle = cDetail[0].p;
-				this.author = cDetail[1].p;
+				this.tauthor = cDetail[1].p;
 				this.status = cDetail[5].font.content;
-				this.sysno = cSyno;
-			   console.log(cSyno);
+				this.cSyno = cSyno;
+				 this.cEps = cEps;
+				
+
 			  // console.log(results)
 			   /* * /
 				   var    docFragment = document.createDocumentFragment(),
@@ -122,6 +120,7 @@ var mangaSite = {
 				   LS._BODY.append(LS._MAINC);
 				  /* */
 			   });
+			console.log("newComic = " + newComic);
 			}
 	},
    // Load first time
