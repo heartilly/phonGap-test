@@ -79,42 +79,40 @@ var mangaSite = {
            this.title = e.a[0].title;
            this.coverImg = e.a[0].img.src;
            this.lastestEps = /\d+/ig.exec(e.p).toString();
-		   this.createBox = function(parentObj){
-			   var divEntry = $("<div/>", {id:this.id,class:"c-entry",click:this.loadEps}).data(this),
-			   imgC = $("<img/>", {src:this.coverImg,class:"thumbS"}),
-			   divEps = $("<div class='c-eps'><div class='c-flex' /></div>").append($("<div class='eps'/>").html(this.lastestEps)),
-			   divImgC = $("<div />",{class:'c-thumbS'}).append(divEps,imgC),
-			   divTitle = $("<div class='c-title' />").append($("<span />",{html :this.title})),
-			   divInfo = $("<div class='c-info' />").append(divTitle);
-			   divEntry.append(divImgC,divInfo);
-			   parentObj.appendChild(divEntry[0]);
-			}
 			this.loadEps = function(){
 			var comic = $(event.currentTarget).data(),
 			   newComic = LS.requestCrossDomain(comic.fullUrl,LS._TARGETSITE.xpath2, function doResult(results,comic) {
-			   var	cDetail = results.div[0].div[0].div[1].ul.li,
-					cEps = results.div[1].ul.li,
-					cSyno = results.div[2].p,
-					newComic = {
-						bTitle : cDetail[0].p,
-						tauthor : cDetail[1].p,
-						status : cDetail[5].font.content,
-						cSyno : cSyno,
-						cEps : cEps
-						}
-					$.extend(comic,newComic);
-						//console.log(comic);
+					var newComic = new LS.comicDetail(results),
+					docFragment = document.createDocumentFragment();
 					
+					$.extend(newComic,comic);
+					newComic.createBox().addFragment(docFragment);
+				    LS._LISTC.append(docFragment);
+					LS._THUMBC.hide();
+				    LS._MAINC.append(LS._LISTC);
+				    LS._BODY.append(LS._MAINC);
 					
-
-			
-				   LS._THUMBC.append(docFragment);
-				   LS._MAINC.append(LS._THUMBC);
-				   LS._BODY.append(LS._MAINC);
-				  /* */
 			   },comic);
 			console.log("newComic = " + newComic);
 			}
+	},
+	comicDetail : function(e){
+	  	var cDetail = e.div[0].div[0].div[1].ul.li,
+			cEps = e.div[1].ul.li,
+			cSyno = e.div[2].p;
+			
+			this.bTitle = cDetail[0].p;
+			this.tauthor = cDetail[1].p;
+			this.status = cDetail[5].font.content;
+			this.cSyno = cSyno;
+			this.cEps = cEps;
+			
+			this.createList = function(parentObj){
+			var divEntry = $("<div/>", {id:this.id,class:"c-entry"});
+			 
+			parentObj.appendChild(divEntry[0]);
+				}
+				
 	},
    // Load first time
    doLastest : function(){
@@ -123,14 +121,16 @@ var mangaSite = {
                    obj = results.li.reverse(),i = obj.length;
                
            while(i--) {var comic = new LS.comic(obj[i]);
-                           comic.createBox(docFragment);
+                          // comic.createBox(docFragment);
+                          docFragment.appendChild(comic.createBox());
 						//	console.log($(".c-entry").data("comic"))
                            }
                
            console.log("======================================");
 
        //    LS._LASTESTCOMIC = lastestComicList;
-           LS._THUMBC.append(docFragment);
+          
+			LS._THUMBC.append(docFragment);
            LS._MAINC.append(LS._THUMBC);
            LS._BODY.append(LS._MAINC);
        });
@@ -319,7 +319,25 @@ function comicSet(data){
 /* */
 };
 /* */
-
+		   LS.comic.prototype.createBox = function(parentObj){
+			   var divEntry = $("<div/>", {id:this.id,class:"c-entry",click:this.loadEps}).data(this),
+			   imgC = $("<img/>", {src:this.coverImg,class:"thumbS"}),
+			   divEps = $("<div class='c-eps'><div class='c-flex' /></div>").append($("<div class='eps'/>").html(this.lastestEps)),
+			   divImgC = $("<div />",{class:'c-thumbS'}).append(divEps,imgC),
+			   divTitle = $("<div class='c-title' />").append($("<span />",{html :this.title})),
+			   divInfo = $("<div class='c-info' />").append(divTitle);
+			   divEntry.append(divImgC,divInfo);
+			  // ddd = new fragment(divEntry[0])
+					//parentObj.appendChild(divEntry[0]);
+			   return divEntry[0];
+			}
+			fragment = function(e){
+				this.content = e;
+				this.addFragment = function(parentObj){
+				console.log("sd")
+					parentObj.appendChild(this.content);
+				}
+			}
 /* */
 LS.doConstrucMain();
 //var fav = new Lawnchair('fav');
